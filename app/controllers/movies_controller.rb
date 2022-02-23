@@ -7,9 +7,22 @@ class MoviesController < ApplicationController
     end
   
     def index
-      @movies = Movie.all
+      id = params[:id]
+      if id == "title_header"
+        @movies = Movie.all.order("title")
+        @title_header_class = "hilite bg-warning"
+        @release_date_header_class = ""
+      elsif id == "release_date_header"
+        @movies = Movie.all.order("release_date")
+        @sort_column = id
+        @title_header_class = ""
+        @release_date_header_class = "hilite bg-warning"
+      else
+        @movies = Movie.all
+        @title_header_class = ""
+      end
     end
-  
+    
     def new
       # default: render 'new' template
     end
@@ -30,7 +43,7 @@ class MoviesController < ApplicationController
       flash[:notice] = "#{@movie.title} was successfully updated."
       redirect_to movie_path(@movie)
     end
-  
+    
     def destroy
       @movie = Movie.find(params[:id])
       @movie.destroy
