@@ -11,22 +11,35 @@ class MoviesController < ApplicationController
       @checked = @all_ratings
       selected_ratings = @all_ratings
       id = params[:id]
+      
       if params[:ratings]
         selected_ratings = params[:ratings].keys
         @checked = selected_ratings
+        session[:ratings] = params[:ratings]
+      elsif session[:ratings]
+        flash.keep
+        redirect_to action: :index, ratings: session[:ratings], id: id and return
       end
+      
+      
       if id == "title_header"
+        session[:id] = id
         @movies = Movie.with_ratings(selected_ratings).order("title")
         @title_header_class = "hilite bg-warning"
         @release_date_header_class = ""
       elsif id == "release_date_header"
+        session[:id] = id
         @movies = Movie.with_ratings(selected_ratings).order("release_date")
         @sort_column = id
         @title_header_class = ""
         @release_date_header_class = "hilite bg-warning"
+      elsif session[:id]
+        flash.keep
+        redirect_to action: :index, ratings: session[:ratings], id: session[:id] and return
       else
         @movies = Movie.with_ratings(selected_ratings)
         @title_header_class = ""
+        
       end
     end
     
