@@ -7,18 +7,26 @@ class MoviesController < ApplicationController
     end
   
     def index
+      @all_ratings = Movie.get_ratings
+      @checked = @all_ratings
+      selected_ratings = @all_ratings
       id = params[:id]
+      if params[:ratings]
+        selected_ratings = params[:ratings].keys
+        @checked = selected_ratings
+      end
+      
       if id == "title_header"
-        @movies = Movie.all.order("title")
+        @movies = Movie.with_ratings(selected_ratings).order("title")
         @title_header_class = "hilite bg-warning"
         @release_date_header_class = ""
       elsif id == "release_date_header"
-        @movies = Movie.all.order("release_date")
+        @movies = Movie.with_ratings(selected_ratings).order("release_date")
         @sort_column = id
         @title_header_class = ""
         @release_date_header_class = "hilite bg-warning"
       else
-        @movies = Movie.all
+        @movies = Movie.with_ratings(selected_ratings)
         @title_header_class = ""
       end
     end
@@ -57,4 +65,4 @@ class MoviesController < ApplicationController
     def movie_params
       params.require(:movie).permit(:title, :rating, :description, :release_date)
     end
-  end
+end
