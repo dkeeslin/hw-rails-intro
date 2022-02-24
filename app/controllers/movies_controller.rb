@@ -14,11 +14,7 @@ class MoviesController < ApplicationController
       if params[:ratings]
         selected_ratings = params[:ratings].keys
         @checked = selected_ratings
-      else
-        selected_ratings = @all_ratings
-        @checked = []
       end
-      
       if id == "title_header"
         @movies = Movie.with_ratings(selected_ratings).order("title")
         @title_header_class = "hilite bg-warning"
