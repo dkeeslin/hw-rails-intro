@@ -8,6 +8,7 @@ class MoviesController < ApplicationController
   
     def index
       #initialize
+      session.clear
       @all_ratings = Movie.get_ratings
       @checked = @all_ratings
       @title_header_class = ""
