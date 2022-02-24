@@ -21,7 +21,6 @@ class MoviesController < ApplicationController
         redirect_to action: :index, ratings: session[:ratings], id: id and return
       end
       
-      
       if id == "title_header"
         session[:id] = id
         @movies = Movie.with_ratings(selected_ratings).order("title")
