@@ -38,7 +38,7 @@ class MoviesController < ApplicationController
       else
         @movies = Movie.with_ratings(selected_ratings)
         @title_header_class = ""
-        
+        @release_date_header_class = ""
       end
     end
     
