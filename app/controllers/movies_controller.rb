@@ -7,8 +7,11 @@ class MoviesController < ApplicationController
     end
   
     def index
+      #initialize
       @all_ratings = Movie.get_ratings
       @checked = @all_ratings
+      @title_header_class = ""
+      @release_date_header_class = ""
       selected_ratings = @all_ratings
       id = params[:id]
       
